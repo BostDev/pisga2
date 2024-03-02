@@ -26,6 +26,8 @@ class _WeatherPageState extends State<WeatherPage> {
     });
   }
 
+  
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _WeatherPageState extends State<WeatherPage> {
       backgroundColor: Colors.orange,
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: Text(
+        title: const Text(
           "Weather Update",
           style: TextStyle(
             fontSize: 24.0,
