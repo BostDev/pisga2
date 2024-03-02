@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,18 +17,28 @@ class _WeatherPageState extends State<WeatherPage> {
   late String condition = "";
 
   Future<void> fetchWeatherData() async {
-    final apiKey = '0af91b7826854c791de8fa120991d2e3';
+    const apiKey = '0af91b7826854c791de8fa120991d2e3';
     final url =
-        'https://api.openweathermap.org/data/2.5/weather?zip=94040,us&appid';
-    final response = await http.get(Uri.parse(url));
-    final decodedResponse = json.decode(response.body);
-    setState(() {
-      temperature = "${decodedResponse['main']['temp']}°C";
-      condition = decodedResponse['weather'][0]['main'];
-    });
-  }
+        'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey&units=metric'; // Updated URL
+    try {
+      final response = await http.get(Uri.parse(url));
 
-  
+      if (response.statusCode == 200) {
+        final decodedResponse = json.decode(response.body);
+        setState(() {
+          temperature = "${decodedResponse['main']['temp']}°C";
+          condition = decodedResponse['weather'][0]['main'];
+        });
+      } else {
+        // Handle error
+        print(
+            'Failed to load weather data. Status Code: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle network errors
+      print('Error fetching weather data: $error');
+    }
+  }
 
   @override
   void initState() {
@@ -52,13 +64,13 @@ class _WeatherPageState extends State<WeatherPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.cloud,
               size: 100.0,
               color: Colors.white,
             ),
-            SizedBox(height: 20.0),
-            Text(
+            const SizedBox(height: 20.0),
+            const Text(
               'Davao City',
               style: TextStyle(
                 fontSize: 32.0,
@@ -66,17 +78,17 @@ class _WeatherPageState extends State<WeatherPage> {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             Text(
               'Temperature: $temperature',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24.0,
                 color: Colors.white,
               ),
             ),
             Text(
               'Condition: $condition',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24.0,
                 color: Colors.white,
               ),
